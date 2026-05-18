@@ -15,7 +15,7 @@ TELEGRAM_BOT_TOKEN = "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw"
 TELEGRAM_CHAT_ID = "8134660761"
 
 # ------------------ DO NOT CHANGE BELOW THIS LINE ------------------
-if DISCORD_TOKEN == "YOUR_DISCORD_USER_TOKEN_HERE" or TELEGRAM_BOT_TOKEN == "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw":
+if DISCORD_TOKEN == "MTQxOTA2NDAwMjI4MDk1MTg0OA.GxLBFf.HgG5TXsmpbo3F-YXsCvi8oadJEEUGeOMf88izM" or TELEGRAM_BOT_TOKEN == "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw":
     raise Exception("Please replace the placeholder tokens with your actual tokens before running.")
 
 # All servers to monitor (ID -> friendly name)
