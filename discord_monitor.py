@@ -9,16 +9,20 @@ from threading import Thread
 import time
 import urllib.request
 
-# ------------------ CONFIGURATION (REPLACE THESE) ------------------
+# ------------------ READ TOKENS FROM ENVIRONMENT ------------------
 DISCORD_TOKEN = "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw"
 TELEGRAM_BOT_TOKEN = "8134660761"
 TELEGRAM_CHAT_ID = "MTQxOTA2NDAwMjI4MDk1MTg0OA.GxLBFf.HgG5TXsmpbo3F-YXsCvi8oadJEEUGeOMf88izM"
 
-# ------------------ DO NOT CHANGE BELOW THIS LINE ------------------
-if DISCORD_TOKEN == "YOUR_DISCORD_USER_TOKEN_HERE" or TELEGRAM_BOT_TOKEN == "YOUR_TELEGRAM_BOT_TOKEN_HERE":
-    raise Exception("Please replace the placeholder tokens with your actual tokens before running.")
+# Check if tokens are present
+if not DISCORD_TOKEN:
+    raise Exception("❌ DISCORD_TOKEN environment variable not set.")
+if not TELEGRAM_BOT_TOKEN:
+    raise Exception("❌ TELEGRAM_TOKEN environment variable not set.")
+if not TELEGRAM_CHAT_ID:
+    raise Exception("❌ CHAT_ID environment variable not set.")
 
-# All servers to monitor (ID -> friendly name)
+# ------------------ SERVERS TO MONITOR ------------------
 SERVERS = {
     "1196857788220067943": "Variational",
     "667044843901681675": "Optimism",
@@ -60,7 +64,6 @@ IGNORE_SERVERS = {
 }
 
 TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
-
 logging.getLogger('discord').setLevel(logging.ERROR)
 
 def send_tg(text, parse_mode="Markdown"):
@@ -73,7 +76,7 @@ def send_tg(text, parse_mode="Markdown"):
     except Exception as e:
         print(f"Telegram error: {e}")
 
-# ------------------ KEEP‑ALIVE WEB SERVER ------------------
+# ------------------ KEEP-ALIVE WEB SERVER ------------------
 app = Flask(__name__)
 
 @app.route('/')
@@ -90,7 +93,6 @@ def keep_alive():
     t.start()
 
 def self_ping():
-    """Ping our own URL every 2 minutes to prevent Render from sleeping."""
     host = os.environ.get("RENDER_EXTERNAL_URL")
     if not host:
         print("RENDER_EXTERNAL_URL not set; self‑ping disabled.")
@@ -232,6 +234,13 @@ if __name__ == "__main__":
     start_self_ping()
     print("Starting full surveillance bot with keep‑alive...")
     try:
-        client.run(DISCORD_TOKEN)
+        # Use asyncio.run to avoid event loop issues
+        asyncio.run(client.start(DISCORD_TOKEN))
+    except discord.LoginFailure:
+        print("❌ Invalid Discord token. Check DISCORD_TOKEN environment variable.")
+        send_tg("❌ Bot failed: Invalid Discord token.")
     except Exception as e:
         print(f"Fatal error: {e}")
+        import traceback
+        traceback.print_exc()
+        send_tg(f"❌ Bot crashed: {str(e)[:200]}")
