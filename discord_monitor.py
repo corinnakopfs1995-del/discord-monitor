@@ -1,3 +1,4 @@
+cat > discord_monitor.py << 'EOF'
 import asyncio
 import os
 import requests
@@ -15,7 +16,7 @@ TELEGRAM_BOT_TOKEN = "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw"
 TELEGRAM_CHAT_ID = "8134660761"
 
 # ------------------ DO NOT CHANGE BELOW THIS LINE ------------------
-if DISCORD_TOKEN == "MTQxOTA2NDAwMjI4MDk1MTg0OA.GB1fM7.102mVxX5VMaSHGt06OeQgWOc4Sd4OIEN6Wyygg" or TELEGRAM_BOT_TOKEN == "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw":
+DISCORD_TOKEN == "MTQxOTA2NDAwMjI4MDk1MTg0OA.GB1fM7.102mVxX5VMaSHGt06OeQgWOc4Sd4OIEN6Wyygg" or TELEGRAM_BOT_TOKEN == "8761714864:AAH3ZuTJYCMoFRmFtNHePzTO8rNwckYnVXw":
     raise Exception("Please replace the placeholder tokens with your actual tokens before running.")
 
 # All servers to monitor (ID -> friendly name)
@@ -235,3 +236,4 @@ if __name__ == "__main__":
         client.run(DISCORD_TOKEN)
     except Exception as e:
         print(f"Fatal error: {e}")
+EOF
